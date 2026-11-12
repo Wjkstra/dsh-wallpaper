@@ -7,9 +7,10 @@ A DSH profile bundle that adds three things to the Desktop Web UI:
 - **Water-opera wallpaper** — the user-provided
   “水光歌剧院中的优雅舞者” image, layered under a dark wash so the chat,
   sidebar, menus, and settings stay readable.
-- **Live balance chip** — top-right pill showing recharge balance, spent,
-  granted bonus, and last-read time, polled every five minutes through the
-  signed-in DeepSeek account.
+- **Live balance card** — sits in the sidebar footer above Settings, so it
+  never covers page controls; shows recharge balance, spent, granted bonus, and
+  the last-read time, polled every five minutes through the signed-in DeepSeek
+  account.
 
 ## Custom media
 

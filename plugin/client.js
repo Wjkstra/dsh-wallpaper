@@ -92,8 +92,11 @@ body, #root, body > div, #root > * {
 body::before, body::after {
   background-image: none !important;
 }
-#dsh-furina-balance, #dsh-furina-balance * { box-sizing: border-box; }
-#dsh-furina-balance button { font: inherit; }
+#dsh-furina-balance-footer, #dsh-furina-balance-footer * { box-sizing: border-box; }
+#dsh-furina-balance-footer button { font: inherit; }
+#dsh-furina-balance-footer { transition: background .15s; }
+#dsh-furina-balance-footer:hover { background: var(--dsw-alias-interactive-bg-hover, rgba(255, 255, 255, .08)) !important; }
+#dsh-furina-balance-footer button:hover { background: var(--dsw-alias-interactive-bg-hover, rgba(255, 255, 255, .16)) !important; }
 #dsh-furina-boot { background-color: #030914 !important; }
 #dsh-furina-boot button { font: inherit; }
 #dsh-furina-wallpaper { opacity: .22 !important; }
@@ -344,10 +347,14 @@ html:not([data-ds-dark-theme]) #dsh-furina-wallpaper {
       })
     }
 
-    /** Format one account balance response into the desktop chip's sentence. */
+    /** Format one account balance response into the sidebar footer's parts. */
     function describeBalance(value, baseline) {
-      if (value === null || value === undefined) return { text: '余额：未登录', signedOut: true }
-      if (value.status !== 'ready') return { text: '余额：读取失败' }
+      if (value === null || value === undefined) {
+        return { text: '余额：未登录', amount: '未登录', detail: '登录后自动读取', signedOut: true }
+      }
+      if (value.status !== 'ready') {
+        return { text: '余额：读取失败', amount: '读取失败', detail: '点击刷新重试' }
+      }
       const current = walletMap(value.value)
       const bonus = walletMap((value.bonusWallets ?? []).filter(wallet => Number(wallet?.balance) > 0))
       if (Object.keys(baseline).length === 0) {
@@ -358,24 +365,27 @@ html:not([data-ds-dark-theme]) #dsh-furina-wallpaper {
         const difference = base - (current[currency] ?? 0)
         if (difference > 0.000001) spent[currency] = difference
       }
-      const parts = []
+      const amounts = []
       for (const currency of orderedCurrencies(current)) {
-        parts.push(`余额 ${symbolOf(currency)}${formatAmount(current[currency])}`)
+        amounts.push(`${symbolOf(currency)}${formatAmount(current[currency])}`)
       }
+      if (amounts.length === 0) amounts.push('¥0.00')
+      const details = []
       for (const currency of orderedCurrencies(spent)) {
-        parts.push(`已用 ${symbolOf(currency)}${formatAmount(spent[currency])}`)
+        details.push(`已用 ${symbolOf(currency)}${formatAmount(spent[currency])}`)
       }
       for (const currency of orderedCurrencies(bonus)) {
-        if (bonus[currency] > 0) parts.push(`赠金 ${symbolOf(currency)}${formatAmount(bonus[currency])}`)
+        if (bonus[currency] > 0) details.push(`赠金 ${symbolOf(currency)}${formatAmount(bonus[currency])}`)
       }
-      if (parts.length === 0) parts.push('余额 ¥0.00')
       const time = new Date().toLocaleTimeString('zh-CN', { hour12: false })
-      return { text: `${parts.join(' · ')} · ${time}（每 5 分钟自动刷新）` }
+      const amount = amounts.join(' · ')
+      const detail = `${details.join(' · ')}${details.length > 0 ? ' · ' : ''}${time}`
+      return { text: `余额 ${amount} · ${detail}（每 5 分钟自动刷新）`, amount, detail }
     }
 
-    /** Live balance pill in the frame-wide overlay; polls every five minutes. */
-    function BalanceChip({ load }) {
-      const [text, setText] = React.useState('余额：读取中…')
+    /** Compact balance row in the sidebar footer; it owns layout space, so it never covers a page control. */
+    function BalanceFooter({ load, wide }) {
+      const [summary, setSummary] = React.useState({ text: '余额：读取中…', amount: '读取中…', detail: '' })
       const [busy, setBusy] = React.useState(false)
       const [signedOut, setSignedOut] = React.useState(false)
       const [failed, setFailed] = React.useState(false)
@@ -390,13 +400,13 @@ html:not([data-ds-dark-theme]) #dsh-furina-wallpaper {
         try {
           const value = await load()
           if (!aliveRef.current) return
-          const summary = describeBalance(value, baselineRef.current)
-          setText(summary.text)
-          setSignedOut(summary.signedOut === true)
-          setFailed(false)
+          const next = describeBalance(value, baselineRef.current)
+          setSummary(next)
+          setSignedOut(next.signedOut === true)
+          setFailed(value !== null && value !== undefined && value.status !== 'ready')
         } catch (error) {
           if (!aliveRef.current) return
-          setText('余额：读取失败')
+          setSummary({ text: '余额：读取失败', amount: '读取失败', detail: '点击刷新重试' })
           setSignedOut(false)
           setFailed(true)
           console.warn('[dsh-furina] balance read failed', error)
@@ -416,57 +426,69 @@ html:not([data-ds-dark-theme]) #dsh-furina-wallpaper {
         }
       }, [refresh])
 
+      const title = signedOut
+        ? '登录 DeepSeek 账号后自动显示余额'
+        : failed
+          ? '余额读取失败，点击刷新重试'
+          : summary.text
+
+      if (!wide) {
+        return h('button', {
+          id: 'dsh-furina-balance-footer',
+          type: 'button',
+          title,
+          'aria-label': title,
+          onClick: () => { void refresh(true) },
+          style: {
+            width: 28, height: 28, padding: 0, border: '1px solid var(--dsw-alias-border-l3)',
+            borderRadius: 8, background: 'transparent', color: 'var(--dsw-alias-label-secondary)',
+            cursor: busy ? 'wait' : 'pointer', opacity: busy ? 0.55 : 1, fontSize: 12,
+          },
+        }, '¥')
+      }
+
       return h('div', {
-        id: 'dsh-furina-balance',
+        id: 'dsh-furina-balance-footer',
         role: 'status',
         'aria-live': 'polite',
-        title: signedOut
-          ? '登录 DeepSeek 账号后自动显示余额'
-          : failed
-            ? '余额读取失败，点击 ⟳ 重试'
-            : '每 5 分钟自动刷新，点击 ⟳ 立即刷新',
+        title,
         style: {
-          position: 'fixed',
-          top: 'var(--dsh-frame-overlay-top, 12px)',
-          right: 150,
-          zIndex: 2147483000,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-          maxWidth: 'min(620px, calc(100vw - 120px))',
-          padding: '5px 9px',
-          borderRadius: 999,
-          background: 'rgba(12, 17, 28, .62)',
-          border: '1px solid rgba(255, 255, 255, .14)',
-          color: '#e7effb',
-          font: '12px "Segoe UI", "Microsoft YaHei", sans-serif',
-          backdropFilter: 'blur(6px)',
-          pointerEvents: 'auto',
-          whiteSpace: 'nowrap',
+          flex: '1 1 auto', minWidth: 0, marginLeft: 8, marginBottom: 6,
+          display: 'flex', alignItems: 'center', gap: 8, padding: '6px 8px',
+          borderRadius: 8, border: '1px solid var(--dsw-alias-border-l3)',
+          background: 'var(--dsw-alias-bg-module-platform, rgba(255, 255, 255, .04))',
+          overflow: 'hidden',
         },
       },
-      h('span', {
-        style: { minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' },
-      }, text),
+      h('div', { style: { minWidth: 0, flex: '1 1 auto', display: 'flex', flexDirection: 'column', gap: 2 } },
+        h('div', { style: { fontSize: 10, lineHeight: '13px', color: 'var(--dsw-alias-label-secondary)' } }, '余额'),
+        h('div', {
+          title: summary.amount,
+          style: {
+            fontSize: 13, lineHeight: '18px', fontWeight: 600, color: 'var(--dsw-alias-label-primary)',
+            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+          },
+        }, summary.amount),
+        summary.detail !== ''
+          ? h('div', {
+              title: summary.detail,
+              style: {
+                fontSize: 10, lineHeight: '13px', color: 'var(--dsw-alias-label-secondary)',
+                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+              },
+            }, summary.detail)
+          : null,
+      ),
       h('button', {
         type: 'button',
         title: '立即刷新余额（每 5 分钟自动刷新一次）',
         'aria-label': '刷新余额',
         disabled: busy,
-        onClick: () => { void refresh(true) },
+        onClick: (event) => { event.stopPropagation(); void refresh(true) },
         style: {
-          flex: 'none',
-          width: 20,
-          height: 20,
-          padding: 0,
-          border: 'none',
-          borderRadius: 999,
-          background: 'rgba(255, 255, 255, .12)',
-          color: '#e7effb',
-          cursor: busy ? 'wait' : 'pointer',
-          opacity: busy ? 0.55 : 1,
-          fontSize: 12,
-          lineHeight: '18px',
+          flex: 'none', width: 22, height: 22, padding: 0, border: 'none', borderRadius: 999,
+          background: 'rgba(255, 255, 255, .1)', color: 'var(--dsw-alias-label-secondary)',
+          cursor: busy ? 'wait' : 'pointer', opacity: busy ? 0.55 : 1, fontSize: 12, lineHeight: '18px',
         },
       }, '⟳'))
     }
@@ -780,12 +802,12 @@ html:not([data-ds-dark-theme]) #dsh-furina-wallpaper {
         }, FurinaSettings))
 
         ctx.inject(['remote', 'remote.account', 'remoteAccess'], (accountCtx) => {
-          accountCtx.remoteAccess.whenAccess('account/watch', () => ctx.slots.inject('shell.overlay', () => ctx.slots.register({
-            name: 'shell.overlay',
+          accountCtx.remoteAccess.whenAccess('account/watch', () => ctx.slots.inject('sidebar.footer.action', () => ctx.slots.register({
+            name: 'sidebar.footer.action',
             id: 'dsh-furina-balance',
-            order: 1500,
+            order: 10,
             inject: () => ({ load: () => readBalance(accountCtx) }),
-          }, BalanceChip)))
+          }, BalanceFooter)))
         })
       },
     }

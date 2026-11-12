@@ -23,9 +23,10 @@ from GitHub Pages or any static HTTPS host and use that URL instead.
   original-sound toggle, and `Esc`/skip.
 - **Wallpaper** — the water-opera image above, under a dark wash so the chat,
   sidebar, menus, and settings stay readable.
-- **Balance chip** — top-right pill showing recharge balance, spent, granted
-  bonus, and last-read time, polled every five minutes through the signed-in
-  DeepSeek account.
+- **Balance card** — sits in the sidebar footer above Settings, so it never
+  covers page controls; shows recharge balance, spent, granted bonus, and
+  last-read time, polled every five minutes through the signed-in DeepSeek
+  account.
 
 ## Custom media
 

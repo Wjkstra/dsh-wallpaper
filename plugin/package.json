@@ -1,8 +1,8 @@
 {
   "name": "dsh-furina-decoration",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "type": "module",
-  "description": "Customizable startup movie, water-opera wallpaper, and live DeepSeek balance chip for DSH.",
+  "description": "Customizable startup movie, water-opera wallpaper, and live DeepSeek balance card for DSH.",
   "license": "MIT",
   "author": "wjping19",
   "keywords": [
@@ -46,7 +46,8 @@
         "@deepseek-ai/dsh-api-remotes",
         "@deepseek-ai/dsh-client-ui-layout",
         "@deepseek-ai/dsh-client-ui-renderer",
-        "@deepseek-ai/dsh-client-ui-settings"
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-ui-sidebar"
       ]
     }
   }

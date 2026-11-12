@@ -1,0 +1,53 @@
+{
+  "name": "dsh-furina-decoration",
+  "version": "1.1.1",
+  "type": "module",
+  "description": "Customizable startup movie, water-opera wallpaper, and live DeepSeek balance chip for DSH.",
+  "license": "MIT",
+  "author": "wjping19",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "plugin",
+    "startup",
+    "wallpaper",
+    "background",
+    "balance",
+    "furina"
+  ],
+  "engines": {
+    "dsh": ">=0.2.2-rc.1"
+  },
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "assets/*",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-api-remotes",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-ui-settings"
+      ]
+    }
+  }
+}

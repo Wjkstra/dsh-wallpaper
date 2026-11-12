@@ -1,19 +1,19 @@
-{
+﻿{
   "format": 1,
   "title": {
     "en": "DSH Wallpaper",
-    "zh": "DSH 壁纸"
+    "zh": "DSH 澹佺焊"
   },
   "description": {
     "en": "Customizable startup movie, water-opera wallpaper, and live DeepSeek balance chip for DSH Desktop.",
-    "zh": "可自定义开机动画、水光歌剧院壁纸和实时 DeepSeek 余额的 DSH 桌面装饰。"
+    "zh": "鍙嚜瀹氫箟寮€鏈哄姩鐢汇€佹按鍏夋瓕鍓ч櫌澹佺焊鍜屽疄鏃?DeepSeek 浣欓鐨?DSH 妗岄潰瑁呴グ銆?
   },
   "metadata": {
     "categories": {
       "appearance": {
         "title": {
           "en": "Appearance",
-          "zh": "外观"
+          "zh": "澶栬"
         }
       }
     },
@@ -21,7 +21,7 @@
       "media": {
         "title": {
           "en": "Custom media",
-          "zh": "自定义媒体"
+          "zh": "鑷畾涔夊獟浣?
         }
       }
     }
@@ -31,11 +31,11 @@
       "name": "dsh-furina-decoration",
       "title": {
         "en": "Furina desktop decoration",
-        "zh": "芙宁娜桌面装饰"
+        "zh": "鑺欏畞濞滄闈㈣楗?
       },
       "description": {
         "en": "Plays a customizable startup movie, paints the water-opera wallpaper, shows a live balance chip, and lets Settings replace the movie and wallpaper with your own files.",
-        "zh": "播放可自定义的开机动画、使用水光歌剧院壁纸、显示实时余额，并可在设置中替换为自己的视频和背景。"
+        "zh": "鎾斁鍙嚜瀹氫箟鐨勫紑鏈哄姩鐢汇€佷娇鐢ㄦ按鍏夋瓕鍓ч櫌澹佺焊銆佹樉绀哄疄鏃朵綑棰濓紝骞跺彲鍦ㄨ缃腑鏇挎崲涓鸿嚜宸辩殑瑙嗛鍜岃儗鏅€?
       },
       "icon": "icon.svg",
       "author": "Wjkstra",
@@ -58,16 +58,16 @@
         ]
       },
       "dist-tags": {
-        "latest": "1.1.2"
+        "latest": "1.1.3"
       },
       "versions": [
         {
-          "version": "1.1.2",
-          "publishTimestamp": 1794469351,
+          "version": "1.1.3",
+          "publishTimestamp": 1794469935,
           "source": {
             "type": "git",
             "url": "https://github.com/Wjkstra/dsh-wallpaper",
-            "commit": "437d588c6c76bfc40c60b8384d6987a8f15cc2bc",
+            "commit": "7a5e8107a389c7cc760010986fa0dbb09f00cf22",
             "path": "plugin"
           },
           "engines": {

@@ -58,16 +58,16 @@
         ]
       },
       "dist-tags": {
-        "latest": "1.1.1"
+        "latest": "1.1.2"
       },
       "versions": [
         {
-          "version": "1.1.1",
-          "publishTimestamp": 1794469184,
+          "version": "1.1.2",
+          "publishTimestamp": 1794469351,
           "source": {
             "type": "git",
             "url": "https://github.com/Wjkstra/dsh-wallpaper",
-            "commit": "e321b854e09e90995a4d118ad53606fd951fabc3",
+            "commit": "437d588c6c76bfc40c60b8384d6987a8f15cc2bc",
             "path": "plugin"
           },
           "engines": {

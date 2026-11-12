@@ -1,0 +1,80 @@
+{
+  "format": 1,
+  "title": {
+    "en": "DSH Wallpaper",
+    "zh": "DSH 壁纸"
+  },
+  "description": {
+    "en": "Customizable startup movie, water-opera wallpaper, and live DeepSeek balance chip for DSH Desktop.",
+    "zh": "可自定义开机动画、水光歌剧院壁纸和实时 DeepSeek 余额的 DSH 桌面装饰。"
+  },
+  "metadata": {
+    "categories": {
+      "appearance": {
+        "title": {
+          "en": "Appearance",
+          "zh": "外观"
+        }
+      }
+    },
+    "labels": {
+      "media": {
+        "title": {
+          "en": "Custom media",
+          "zh": "自定义媒体"
+        }
+      }
+    }
+  },
+  "plugins": [
+    {
+      "name": "dsh-furina-decoration",
+      "title": {
+        "en": "Furina desktop decoration",
+        "zh": "芙宁娜桌面装饰"
+      },
+      "description": {
+        "en": "Plays a customizable startup movie, paints the water-opera wallpaper, shows a live balance chip, and lets Settings replace the movie and wallpaper with your own files.",
+        "zh": "播放可自定义的开机动画、使用水光歌剧院壁纸、显示实时余额，并可在设置中替换为自己的视频和背景。"
+      },
+      "icon": "icon.svg",
+      "author": "Wjkstra",
+      "homepage": "https://github.com/Wjkstra/dsh-wallpaper",
+      "repository": {
+        "url": "https://github.com/Wjkstra/dsh-wallpaper",
+        "directory": "plugin"
+      },
+      "metadata": {
+        "category": "appearance",
+        "labels": [
+          "media"
+        ],
+        "keywords": [
+          "startup",
+          "wallpaper",
+          "background",
+          "balance",
+          "furina"
+        ]
+      },
+      "dist-tags": {
+        "latest": "1.1.1"
+      },
+      "versions": [
+        {
+          "version": "1.1.1",
+          "publishTimestamp": 1794469184,
+          "source": {
+            "type": "git",
+            "url": "https://github.com/Wjkstra/dsh-wallpaper",
+            "commit": "e321b854e09e90995a4d118ad53606fd951fabc3",
+            "path": "plugin"
+          },
+          "engines": {
+            "dsh": ">=0.2.2-rc.1"
+          }
+        }
+      ]
+    }
+  ]
+}

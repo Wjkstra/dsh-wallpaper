@@ -10,7 +10,7 @@ A DSH Desktop decoration bundle: a customizable startup movie, the
 Add this URL in **Plugins → Discover → Add index source**:
 
 ```text
-https://raw.githubusercontent.com/Wjkstra/dsh-wallpaper/main/index.json
+https://raw.githubusercontent.com/Wjkstra/dsh-wallpaper/main/v1/index.json
 ```
 
 Then install **Furina desktop decoration** (`dsh-furina-decoration`). If raw

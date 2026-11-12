@@ -30,7 +30,7 @@ whether the active source is the packaged default or your custom file.
 Add this index URL in **Plugins → Discover → Add index source**:
 
 ```text
-https://raw.githubusercontent.com/Wjkstra/dsh-wallpaper/main/v1/index.json
+https://raw.githubusercontent.com/Wjkstra/dsh-wallpaper/main/v2/index.json
 ```
 
 Then install **Furina desktop decoration** (`dsh-furina-decoration`). The bundle
